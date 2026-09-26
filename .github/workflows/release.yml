@@ -1,0 +1,43 @@
+name: Auto Build Zip and Release
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - 'manifest.json'
+      - '**/*.js'
+      - '**/*.html'
+      - '**/*.css'
+
+permissions:
+  contents: write
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Read version from manifest.json
+        id: get_version
+        run: |
+          VERSION=$(jq -r '.version' manifest.json)
+          echo "VERSION=$VERSION" >> $GITHUB_ENV
+          echo "Version extracted: $VERSION"
+
+      - name: Create Zip Package
+        run: |
+          zip -r "AutoContinua-v${{ env.VERSION }}.zip" . -x "*.git*" ".github/*"
+
+      - name: Create or Update Release
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: "v${{ env.VERSION }}"
+          name: "Release v${{ env.VERSION }}"
+          body: |
+            Aggiornamento automatico estensione versione ${{ env.VERSION }}.
+          files: "AutoContinua-v${{ env.VERSION }}.zip"
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
