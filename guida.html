@@ -1,0 +1,312 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="utf-8" />
+<title>AutoContinua — Guida rapida</title>
+<link rel="stylesheet"
+  href="https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@20,400,0,0" />
+<style>
+  :root {
+    color-scheme: light;
+    --accent: #c0392b;
+    --info: #2c6fbb;
+    --bg: #ffffff;
+    --bg-alt: #f5f5f5;
+    --text: #222;
+    --border: #e0e0e0;
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    background: var(--bg-alt);
+    color: var(--text);
+    font-family: -apple-system, "Segoe UI", Roboto, Arial, sans-serif;
+    line-height: 1.55;
+  }
+  .material-symbols-rounded {
+    font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+    vertical-align: -5px;
+    font-size: 22px;
+  }
+  .wrap {
+    max-width: 760px;
+    margin: 0 auto;
+    padding: 32px 24px 64px;
+  }
+  header {
+    text-align: center;
+    margin-bottom: 24px;
+  }
+  header h1 {
+    margin: 0 0 4px 0;
+    font-size: 26px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+  }
+  header h1 .material-symbols-rounded { font-size: 30px; vertical-align: -6px; }
+  header p {
+    margin: 0;
+    color: #666;
+    font-size: 14px;
+  }
+  .card {
+    background: var(--bg);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 20px 24px;
+    margin-bottom: 20px;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.04);
+  }
+  .disclaimer {
+    background: #fdf1f0;
+    border: 1px solid var(--accent);
+    border-radius: 10px;
+    padding: 20px 24px;
+    margin-bottom: 20px;
+  }
+  .disclaimer h2 {
+    color: var(--accent);
+    margin-top: 0;
+    font-size: 19px;
+    display: flex; align-items: center; gap: 6px;
+  }
+  .disclaimer ol { padding-left: 20px; }
+  .disclaimer li { margin-bottom: 12px; }
+  .disclaimer .accept {
+    margin-top: 14px;
+    font-style: italic;
+    font-size: 13px;
+    color: #7a2c25;
+    border-top: 1px dashed var(--accent);
+    padding-top: 10px;
+  }
+  .info-note {
+    background: #eaf2fb;
+    border: 1px solid var(--info);
+    border-radius: 10px;
+    padding: 16px 20px;
+    margin-bottom: 28px;
+    font-size: 14px;
+  }
+  .info-note h2 {
+    color: var(--info);
+    margin: 0 0 8px 0;
+    font-size: 16px;
+    display: flex; align-items: center; gap: 6px;
+  }
+  h2 { font-size: 19px; margin-top: 0; display: flex; align-items: center; gap: 6px; }
+  h3 { font-size: 15px; }
+  code, kbd {
+    background: #eee;
+    border-radius: 4px;
+    padding: 2px 6px;
+    font-family: Consolas, monospace;
+    font-size: 13px;
+  }
+  kbd {
+    border: 1px solid #ccc;
+    border-bottom-width: 2px;
+    font-weight: bold;
+  }
+  table {
+    border-collapse: collapse;
+    width: 100%;
+    margin: 10px 0;
+    font-size: 14px;
+  }
+  th, td {
+    border: 1px solid var(--border);
+    padding: 8px 10px;
+    text-align: left;
+  }
+  th { background: var(--bg-alt); }
+  ol, ul { padding-left: 22px; }
+  li { margin-bottom: 6px; }
+  .faq dt { font-weight: bold; margin-top: 12px; display: flex; align-items: center; gap: 6px; }
+  .faq dd { margin: 4px 0 0 0; color: #333; }
+  footer {
+    text-align: center;
+    font-size: 12px;
+    color: #999;
+    margin-top: 30px;
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <header>
+    <h1><span class="material-symbols-rounded">smart_toy</span> AutoContinua</h1>
+    <p>Guida rapida di installazione e utilizzo</p>
+    <p style="margin-top: 4px;">
+      Realizzata da: <strong>Ettore Sartori</strong> —
+      <a href="https://github.com/Ekt0re/AutoContinua" target="_blank" rel="noopener noreferrer"
+         style="color: var(--info); text-decoration: none;">Github.com/Ekt0re/AutoContinua</a>
+    </p>
+  </header>
+
+  <div class="disclaimer">
+    <h2><span class="material-symbols-rounded">warning</span> Disclaimer — leggere prima dell'uso</h2>
+    <ol>
+      <li><strong>Scopo del progetto.</strong> Questa estensione è un progetto
+        <strong>a scopo didattico/dimostrativo</strong>, realizzato per
+        esplorare tecniche di automazione e accessibilità nel browser
+        (manipolazione del DOM, <code>MutationObserver</code>, estensioni
+        Chrome Manifest V3).</li>
+      <li><strong>Finalità di accessibilità.</strong> È pensata principalmente
+        come <strong>ausilio per persone con specifiche difficoltà di
+        accessibilità</strong> (motorie, visive, di coordinazione, di
+        affaticamento, ecc.), che possono così fruire di contenuti con
+        avanzamento automatico — senza dover individuare ogni volta il
+        pulsante "Continua" a schermo o compiere ripetuti movimenti del
+        cursore/mouse.</li>
+      <li><strong>Uso consapevole e lecito.</strong> L'autore chiede a
+        chiunque utilizzi questa estensione di farne un
+        <strong>uso consapevole, responsabile e conforme alle leggi, ai
+        regolamenti e alle policy</strong> della piattaforma, dell'ente
+        formativo o del datore di lavoro coinvolti. L'estensione non deve
+        essere usata per aggirare obblighi formativi reali, falsificare la
+        presenza a un corso o superare test senza le competenze
+        richieste.</li>
+      <li><strong>Esclusione di responsabilità.</strong> L'autore
+        <strong>si dissocia esplicitamente da qualsiasi uso fraudolento,
+        scorretto o non conforme</strong> di questo software e
+        <strong>prende le distanze</strong> da tali comportamenti. Ogni
+        conseguenza derivante da un uso improprio — inclusi, a titolo
+        esemplificativo e non esaustivo,
+        <strong>squalifica, invalidazione di un test o di un corso,
+        provvedimenti disciplinari o legali</strong>, dovuti al fatto che
+        una piattaforma di e-learning rilevi l'uso dell'estensione o ne
+        consideri l'utilizzo una violazione delle proprie condizioni d'uso —
+        <strong>non è in alcun modo e in alcun caso attribuibile
+        all'autore/creatore dell'estensione</strong>. L'utente utilizza il
+        software <strong>a proprio rischio e sotto la propria esclusiva
+        responsabilità</strong>.</li>
+    </ol>
+    <p class="accept">Continuando a installare e utilizzare l'estensione, si
+      dichiara di aver letto, compreso e accettato integralmente quanto
+      sopra.</p>
+  </div>
+
+  <div class="info-note">
+    <h2><span class="material-symbols-rounded">smart_toy</span> Nota sullo sviluppo</h2>
+    <p>La stesura del codice di questa estensione è stata
+      <strong>assistita dall'uso di Claude AI</strong> (Anthropic). Tuttavia,
+      le fasi di <strong>progettazione, ideazione e test</strong> sono state
+      svolte <strong>interamente dal sottoscritto</strong>, Sartori Ettore autore del
+      progetto, che ha definito i requisiti, verificato il funzionamento sul
+      contenuto reale e validato ogni comportamento prima del rilascio.</p>
+  </div>
+
+  <div class="card">
+    <h2><span class="material-symbols-rounded">checklist</span> 1. Cosa fa l'estensione</h2>
+    <ul>
+      <li>Individua nella pagina i pulsanti "Continua" — sia gli hitbox
+        invisibili tipo <code>id^="Click_Box"</code>/<code>cp-frameset</code>,
+        sia i normali bottoni con testo visibile "Continua" (es. nella slide
+        di riepilogo del test) — e li clicca automaticamente, uno alla
+        volta, senza "spammare" click. I bottoni con testo "Controlla Test"
+        (o simili) sono sempre esclusi ed escludibili.</li>
+      <li>Se compare un <strong>test/quiz</strong> (es. domande a scelta
+        singola/multipla), si <strong>ferma da sola</strong>, emette un
+        <strong>suono di avviso</strong> e mostra un <strong>banner</strong>
+        a schermo, in modo da poterlo svolgere con calma.</li>
+      <li>Resta sempre possibile <strong>usare normalmente il PC</strong>
+        (mouse, altre finestre, ecc.) mentre l'estensione lavora sulla
+        scheda del corso.</li>
+    </ul>
+  </div>
+
+  <div class="card">
+    <h2><span class="material-symbols-rounded">download</span> 2. Installazione (una tantum)</h2>
+    <ol>
+      <li>Estrai lo zip dell'estensione in una cartella a tua scelta.</li>
+      <li>Apri Chrome e vai su <code>chrome://extensions</code>.</li>
+      <li>In alto a destra, attiva <strong>"Modalità sviluppatore"</strong>.</li>
+      <li>Clicca <strong>"Carica estensione non pacchettizzata"</strong>.</li>
+      <li>Seleziona la cartella che contiene <code>manifest.json</code>.</li>
+      <li>L'icona comparirà nella barra di Chrome (se non la vedi, apri
+        l'icona a puzzle 🧩 e "aggancia" AutoContinua).</li>
+    </ol>
+  </div>
+
+  <div class="card">
+    <h2><span class="material-symbols-rounded">play_circle</span> 3. Utilizzo quotidiano</h2>
+    <ol>
+      <li>Apri la pagina del corso e-learning in Chrome.</li>
+      <li>Clicca l'icona <strong>AutoContinua</strong> nella barra del browser.</li>
+      <li>Premi <strong>"Avvia"</strong> nel popup, oppure <kbd>ALT</kbd>+<kbd>P</kbd>.</li>
+      <li>Lo stato diventa <strong>"attivo"</strong>: i pulsanti "Continua" vengono
+        cliccati automaticamente man mano che compaiono.</li>
+      <li>Se compare un test, l'estensione si ferma da sola: sentirai un
+        doppio beep e vedrai un banner rosso in alto. Svolgi il test, poi
+        premi <kbd>ALT</kbd>+<kbd>P</kbd> per riprendere.</li>
+      <li>Per fermare tutto in qualsiasi momento: <kbd>ALT</kbd>+<kbd>S</kbd>.</li>
+    </ol>
+
+    <h3>Scorciatoie da tastiera</h3>
+    <table>
+      <tr><th>Tasti</th><th>Azione</th></tr>
+      <tr><td><kbd>ALT</kbd> + <kbd>P</kbd></td><td>Avvia / riprende (conferma anche un test rilevato)</td></tr>
+      <tr><td><kbd>ALT</kbd> + <kbd>S</kbd></td><td>Ferma l'automazione</td></tr>
+    </table>
+
+    <h3>Popup dell'estensione</h3>
+    <ul>
+      <li><strong>Avvia / Ferma</strong> — controlli manuali equivalenti alle scorciatoie.</li>
+      <li><strong>Stato</strong> — attivo / fermo / in pausa per test.</li>
+      <li><strong>Log</strong> — elenco delle ultime azioni, utile per capire cosa succede.</li>
+      <li><strong>Guida</strong> — riapre questa pagina in qualsiasi momento.</li>
+    </ul>
+  </div>
+
+  <div class="card">
+    <h2><span class="material-symbols-rounded">cookie</span> 4. Cookie e dati locali</h2>
+    <p>AutoContinua <strong>non usa cookie di tracciamento</strong> e
+      <strong>non invia alcun dato a server esterni</strong>. Utilizza
+      esclusivamente l'API <code>chrome.storage.local</code> del browser per
+      salvare, solo sul tuo dispositivo:</p>
+    <ul>
+      <li>lo stato attivo/fermo dell'estensione;</li>
+      <li>il registro (log) delle ultime azioni svolte, a scopo di
+        diagnostica.</li>
+    </ul>
+    <p>Questi dati restano locali, non sono condivisi con terze parti e
+      vengono rimossi automaticamente disinstallando l'estensione (o
+      cancellabili manualmente da <code>chrome://extensions</code>).</p>
+  </div>
+
+  <div class="card faq">
+    <h2><span class="material-symbols-rounded">help</span> 5. Domande frequenti</h2>
+    <dl>
+      <dt><span class="material-symbols-rounded">speed</span> L'estensione clicca troppo velocemente?</dt>
+      <dd>No: c'è un intervallo minimo tra un click e l'altro, e ogni
+        elemento viene cliccato una sola volta finché resta a schermo.</dd>
+
+      <dt><span class="material-symbols-rounded">search_off</span> Non rileva il pulsante "Continua" nella mia pagina.</dt>
+      <dd>Apri Strumenti per sviluppatori (F12 → Elements), individua il
+        pulsante e verifica id/classi/testo: possono essere aggiunti ai
+        selettori nel file <code>content.js</code>.</dd>
+
+      <dt><span class="material-symbols-rounded">volume_off</span> Il beep del quiz non si sente.</dt>
+      <dd>Alcuni browser bloccano l'audio finché non interagisci con la
+        pagina: clicca una volta sulla pagina del corso dopo averla
+        aperta, poi riprova.</dd>
+
+      <dt><span class="material-symbols-rounded">delete</span> Posso disinstallarla facilmente?</dt>
+      <dd><code>chrome://extensions</code> → card di AutoContinua →
+        "Rimuovi".</dd>
+    </dl>
+  </div>
+
+  <footer>
+    AutoContinua — progetto a scopo didattico e di accessibilità.<br />
+    Autore:
+    <a href="https://github.com/Ekt0re" target="_blank"</a><strong>Ettore Sartori</strong>
+  </footer>
+
+</div>
+</body>
+</html>
