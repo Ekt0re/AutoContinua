@@ -23,7 +23,7 @@ Questa estensione è un progetto a **scopo didattico/dimostrativo**, realizzato 
 * difficoltà di coordinazione;
 * affaticamento.
 
-L'obiettivo è permettere di fruire di contenuti con avanzamento automatico senza dover individuare ogni volta i pulsanti di navigazione a schermo o compiere ripetuti movimenti del cursore/mouse.
+L'obiettivo è permettere di fruire di contenuti con avanzamento automatico senza dover individuare ogni volta i pulsanti di navigazione a schermo o compiere ripetuti movimenti del cursore/mouse, indipendentemente dalla lingua del corso (italiano o inglese).
 
 ### ⚠️ Uso consapevole e lecito
 
@@ -49,9 +49,9 @@ L'utente utilizza il software **a proprio rischio e sotto la propria esclusiva r
 
 AutoContinua:
 
-* individua nella pagina i pulsanti di navigazione **"Continua"**, **"Avanti"** e altri tasti interattivi;
+* individua nella pagina i pulsanti di navigazione **"Continua"**, **"Avanti"** (italiano) e **"Continue"**, **"Next"**, **"Forward"** (inglese) e altri tasti interattivi;
 * supporta hitbox invisibili come `id^="Click_Box"` / `cp-frameset`, pulsanti con id `#next`, e pulsanti interattivi `.acc-button`;
-* riconosce bottoni con testo visibile "Continua" o "Avanti";
+* riconosce bottoni con testo visibile "Continua", "Avanti" (in italiano) e "Continue", "Next", "Forward" (in inglese);
 * clicca gli elementi automaticamente, uno alla volta;
 * evita di effettuare click ripetuti sullo stesso elemento mentre rimane a schermo;
 * esclude i pulsanti **"Controlla Test"** o simili;

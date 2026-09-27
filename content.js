@@ -1,5 +1,5 @@
 // AutoContinua - content script
-// Clicca i "Click Box" / pulsanti Continua nel DOM, ma si ferma da solo,
+// Clicca i "Click Box" / pulsanti Continua/Avanti/Continue/Next nel DOM, ma si ferma da solo,
 // avvisa con un suono e un banner quando compare un elemento di TEST/QUIZ
 // (es. classi Captivate cp-singleChoiceInput, cp-multipleChoiceInput, ecc.).
 // L'utente riprende manualmente con ALT+P dopo aver svolto il test.
@@ -151,6 +151,7 @@
   // "Risultato Test": bottoni "Continua" / "Controlla Test" con testo reale,
   // non hitbox invisibili come i Click_Box). Esclude esplicitamente qualsiasi
   // bottone il cui testo contenga "Controll..." (es. "Controlla Test").
+  // Supporta anche testi in inglese: "continue", "next", "forward".
   function findTextContinueCandidates() {
     let pool;
     try {
@@ -166,7 +167,9 @@
       const t = (el.textContent || "").trim().toLowerCase();
       if (!t || t.length > 20) return;
       if (t.includes("controll")) return; // esclude "Controlla Test" e simili
-      if (t === "continua" || t.startsWith("continua") || t === "avanti" || t.startsWith("avanti")) results.push(el);
+      if (t === "continua" || t.startsWith("continua") || t === "avanti" || t.startsWith("avanti") ||
+          t === "continue" || t.startsWith("continue") || t === "next" || t.startsWith("next") ||
+          t === "forward" || t.startsWith("forward")) results.push(el);
     });
     return results;
   }
