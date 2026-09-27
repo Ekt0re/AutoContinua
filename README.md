@@ -80,21 +80,24 @@ Al termine del test è possibile riprendere l'automazione premendo:
 
 L'installazione deve essere effettuata una sola volta.
 
-1. Estrai lo ZIP dell'estensione in una cartella a tua scelta.
+1. Scarica l'[Ultima Release](https://github.com/Ekt0re/AutoContinua/releases/latest) 
+_(File .zip dell'estensione dalla sezione Assets. Non scaricare il codice sorgente Source code )._
 
-2. Apri Chrome.
+2. Estrai lo ZIP dell'estensione in una cartella a tua scelta.
 
-3. Vai su:
+3. Apri Chrome.
+
+4. Vai su:
 
    `chrome://extensions`
 
-4. Attiva **Modalità sviluppatore**.
+5. Attiva **Modalità sviluppatore**.
 
-5. Clicca **Carica estensione non pacchettizzata**.
+6. Clicca **Carica estensione non pacchettizzata**.
 
-6. Seleziona la cartella che contiene `manifest.json`.
+7. Seleziona la cartella che contiene `manifest.json`.
 
-7. L'icona di AutoContinua comparirà tra le estensioni di Chrome.
+8. L'icona di AutoContinua comparirà tra le estensioni di Chrome.
 
 Se non è visibile direttamente nella barra, apri l'icona delle estensioni 🧩 e fissa **AutoContinua**.
 
