@@ -2,11 +2,15 @@
 // Clicca i "Click Box" / pulsanti Continua/Avanti/Continue/Next nel DOM, ma si ferma da solo,
 // avvisa con un suono e un banner quando compare un elemento di TEST/QUIZ
 // (es. classi Captivate cp-singleChoiceInput, cp-multipleChoiceInput, ecc.).
-// L'utente riprende manualmente con ALT+P dopo aver svolto il test.
+// L'utente riprende manualmente con CTRL+SHIFT+ALT+P dopo aver svolto il test.
 //
 // Hotkey:
-//   ALT+S -> STOP  (ferma il click automatico in qualsiasi momento)
-//   ALT+P -> START (avvia / riprende, anche dopo una pausa da quiz)
+//   CTRL+SHIFT+ALT+S -> STOP  (ferma il click automatico in qualsiasi momento)
+//   CTRL+SHIFT+ALT+P -> START (avvia / riprende, anche dopo una pausa da quiz)
+
+// Carica polyfill per compatibilità cross-browser
+// @ts-ignore
+const browserAPI = typeof browser !== 'undefined' ? browser : chrome;
 
 (function () {
   const CONFIG = {
@@ -39,11 +43,11 @@
     sameElementCooldown: 3000
   };
 
-  let running = false;      // motore di click abilitato dall'utente (popup / ALT+P / ALT+S)
+  let running = false;      // motore di click abilitato dall'utente (popup / CTRL+SHIFT+ALT+P / CTRL+SHIFT+ALT+S)
   let quizPause = false;    // pausa forzata perché è comparso un test
   let lastClickTime = 0;
   const recentlyClicked = new Map();     // key -> timestamp (dedupe click "Continua")
-  let resumeGraceUntil = 0;              // timestamp: fino a quando ignorare i quiz dopo una ripresa (ALT+P)
+  let resumeGraceUntil = 0;              // timestamp: fino a quando ignorare i quiz dopo una ripresa (CTRL+SHIFT+ALT+P)
   const QUIZ_RESUME_GRACE_MS = 2000;
   let intervalId = null;
   let observer = null;
@@ -55,14 +59,18 @@
   function log(msg) {
     const line = `[AutoContinua ${new Date().toLocaleTimeString()}] ${msg}`;
     console.log(line);
-    try {
-      chrome.storage.local.get({ logs: [] }, (data) => {
+    // storage.local.get/set: uso sempre la forma a Promise (nessun callback).
+    // Su Chrome (MV3, Chrome 88+) e su Firefox (browser.*) entrambe le API
+    // ritornano una Promise quando non si passa un callback: questa forma
+    // funziona identica su entrambi i browser.
+    Promise.resolve(browserAPI.storage.local.get({ logs: [] }))
+      .then((data) => {
         const logs = data.logs || [];
         logs.push(line);
         if (logs.length > 300) logs.shift();
-        chrome.storage.local.set({ logs });
-      });
-    } catch (e) {}
+        return browserAPI.storage.local.set({ logs });
+      })
+      .catch(() => {});
   }
 
   // ---------------------------------------------------------------------
@@ -188,7 +196,7 @@
   // RILEVAMENTO QUIZ
   // ---------------------------------------------------------------------
   function checkQuiz() {
-    // Subito dopo una ripresa (ALT+P) ignoriamo per una breve finestra,
+    // Subito dopo una ripresa (CTRL+SHIFT+ALT+P) ignoriamo per una breve finestra,
     // per non ribloccare istantaneamente sullo stesso quiz ancora a schermo
     // nel preciso istante in cui l'utente riprende.
     if (Date.now() < resumeGraceUntil) return;
@@ -216,10 +224,10 @@
     quizPause = true;
     stopEngine(false); // ferma il click ma non tocca 'running' nello storage
     playAlertSound();
-    showBanner("È presente un TEST da svolgere. Completalo, poi premi ALT+P per riprendere.");
-    log(`Rilevato test (${quizElements.length} elemento/i). Autoclicker in pausa: premi ALT+P dopo averlo svolto.`);
+    showBanner("È presente un TEST da svolgere. Completalo, poi premi CTRL+SHIFT+ALT+P per riprendere.");
+    log(`Rilevato test (${quizElements.length} elemento/i). Autoclicker in pausa: premi CTRL+SHIFT+ALT+P dopo averlo svolto.`);
     try {
-      chrome.storage.local.set({ quizPause: true });
+      browserAPI.storage.local.set({ quizPause: true });
     } catch (e) {}
   }
 
@@ -228,7 +236,7 @@
     resumeGraceUntil = Date.now() + QUIZ_RESUME_GRACE_MS;
     hideBanner();
     try {
-      chrome.storage.local.set({ quizPause: false });
+      browserAPI.storage.local.set({ quizPause: false });
     } catch (e) {}
   }
 
@@ -298,51 +306,55 @@
     stopEngine();
   }
 
-  // ALT+P: avvia / riprende (conferma eventuale quiz in corso)
-  function handleAltP() {
+  // CTRL+SHIFT+ALT+P: avvia / riprende (conferma eventuale quiz in corso)
+  function handleStartKey() {
     if (quizPause) {
-      log("ALT+P: test confermato, riprendo.");
+      log("CTRL+SHIFT+ALT+P: test confermato, riprendo.");
       acknowledgeQuizAndResume();
     }
     running = true;
     startEngine();
     try {
-      chrome.storage.local.set({ running: true });
+      browserAPI.storage.local.set({ running: true });
     } catch (e) {}
-    log("ALT+P: avviato.");
+    log("CTRL+SHIFT+ALT+P: avviato.");
   }
 
-  // ALT+S: stop manuale
-  function handleAltS() {
+  // CTRL+SHIFT+ALT+S: stop manuale
+  function handleStopKey() {
     running = false;
     stopEngine(false);
     try {
-      chrome.storage.local.set({ running: false });
+      browserAPI.storage.local.set({ running: false });
     } catch (e) {}
-    log("ALT+S: fermato.");
+    log("CTRL+SHIFT+ALT+S: fermato.");
   }
 
   document.addEventListener(
     "keydown",
     (e) => {
-      if (e.altKey && e.key.toLowerCase() === "s") {
-        handleAltS();
-      } else if (e.altKey && e.key.toLowerCase() === "p") {
-        handleAltP();
+      if (e.ctrlKey && e.shiftKey && e.altKey && e.key.toLowerCase() === "s") {
+        e.preventDefault();
+        handleStopKey();
+      } else if (e.ctrlKey && e.shiftKey && e.altKey && e.key.toLowerCase() === "p") {
+        e.preventDefault();
+        handleStartKey();
       }
     },
     true
   );
 
   // ---------------------------------------------------------------------
-  // SINCRONIZZAZIONE CON IL POPUP (chrome.storage)
+  // SINCRONIZZAZIONE CON IL POPUP (browserAPI.storage)
   // ---------------------------------------------------------------------
   try {
-    chrome.storage.local.get({ running: false, quizPause: false }, (data) => {
-      quizPause = !!data.quizPause;
-      if (data.running) start();
-    });
-    chrome.storage.onChanged.addListener((changes) => {
+    Promise.resolve(browserAPI.storage.local.get({ running: false, quizPause: false }))
+      .then((data) => {
+        quizPause = !!data.quizPause;
+        if (data.running) start();
+      })
+      .catch(() => {});
+    browserAPI.storage.onChanged.addListener((changes) => {
       if (changes.running) {
         if (changes.running.newValue) start();
         else stop();

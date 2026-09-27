@@ -1,8 +1,12 @@
 // AutoContinua - background service worker
 // Apre la guida HTML alla prima installazione dell'estensione.
 
-chrome.runtime.onInstalled.addListener((details) => {
+// Polyfill per compatibilità cross-browser
+// @ts-ignore
+const browserAPI = typeof browser !== 'undefined' ? browser : chrome;
+
+browserAPI.runtime.onInstalled.addListener((details) => {
   if (details.reason === "install") {
-    chrome.tabs.create({ url: chrome.runtime.getURL("guida.html") });
+    browserAPI.tabs.create({ url: browserAPI.runtime.getURL("guida.html") });
   }
 });

@@ -223,6 +223,10 @@
     <h2><span class="material-symbols-rounded">download</span> 2. Installazione (una tantum)</h2>
     <ol>
       <li>Estrai lo zip dell'estensione in una cartella a tua scelta.</li>
+    </ol>
+
+    <h3>Per Chrome</h3>
+    <ol start="2">
       <li>Apri Chrome e vai su <code>chrome://extensions</code>.</li>
       <li>In alto a destra, attiva <strong>"Modalità sviluppatore"</strong>.</li>
       <li>Clicca <strong>"Carica estensione non pacchettizzata"</strong>.</li>
@@ -230,27 +234,36 @@
       <li>L'icona comparirà nella barra di Chrome (se non la vedi, apri
         l'icona a puzzle 🧩 e "aggancia" AutoContinua).</li>
     </ol>
+
+    <h3>Per Firefox</h3>
+    <ol start="2">
+      <li>Apri Firefox e vai su <code>about:debugging#/runtime/this-firefox</code>.</li>
+      <li>Clicca <strong>"Carica un componente aggiuntivo temporaneo..."</strong>.</li>
+      <li>Seleziona il file <code>manifest.json</code> nella cartella estratta.</li>
+      <li>L'icona comparirà nella barra di Firefox (se non la vedi, apri
+        il menu delle estensioni e fissa AutoContinua).</li>
+    </ol>
   </div>
 
   <div class="card">
     <h2><span class="material-symbols-rounded">play_circle</span> 3. Utilizzo quotidiano</h2>
     <ol>
-      <li>Apri la pagina del corso e-learning in Chrome.</li>
+      <li>Apri la pagina del corso e-learning nel browser (Chrome o Firefox).</li>
       <li>Clicca l'icona <strong>AutoContinua</strong> nella barra del browser.</li>
-      <li>Premi <strong>"Avvia"</strong> nel popup, oppure <kbd>ALT</kbd>+<kbd>P</kbd>.</li>
+      <li>Premi <strong>"Avvia"</strong> nel popup, oppure <kbd>CTRL</kbd>+<kbd>SHIFT</kbd>+<kbd>ALT</kbd>+<kbd>P</kbd>.</li>
       <li>Lo stato diventa <strong>"attivo"</strong>: i pulsanti "Continua" vengono
         cliccati automaticamente man mano che compaiono.</li>
       <li>Se compare un test, l'estensione si ferma da sola: sentirai un
         doppio beep e vedrai un banner rosso in alto. Svolgi il test, poi
-        premi <kbd>ALT</kbd>+<kbd>P</kbd> per riprendere.</li>
-      <li>Per fermare tutto in qualsiasi momento: <kbd>ALT</kbd>+<kbd>S</kbd>.</li>
+        premi <kbd>CTRL</kbd>+<kbd>SHIFT</kbd>+<kbd>ALT</kbd>+<kbd>P</kbd> per riprendere.</li>
+      <li>Per fermare tutto in qualsiasi momento: <kbd>CTRL</kbd>+<kbd>SHIFT</kbd>+<kbd>ALT</kbd>+<kbd>S</kbd>.</li>
     </ol>
 
     <h3>Scorciatoie da tastiera</h3>
     <table>
       <tr><th>Tasti</th><th>Azione</th></tr>
-      <tr><td><kbd>ALT</kbd> + <kbd>P</kbd></td><td>Avvia / riprende (conferma anche un test rilevato)</td></tr>
-      <tr><td><kbd>ALT</kbd> + <kbd>S</kbd></td><td>Ferma l'automazione</td></tr>
+      <tr><td><kbd>CTRL</kbd> + <kbd>SHIFT</kbd> + <kbd>ALT</kbd> + <kbd>P</kbd></td><td>Avvia / riprende (conferma anche un test rilevato)</td></tr>
+      <tr><td><kbd>CTRL</kbd> + <kbd>SHIFT</kbd> + <kbd>ALT</kbd> + <kbd>S</kbd></td><td>Ferma l'automazione</td></tr>
     </table>
 
     <h3>Popup dell'estensione</h3>
@@ -266,7 +279,7 @@
     <h2><span class="material-symbols-rounded">cookie</span> 4. Cookie e dati locali</h2>
     <p>AutoContinua <strong>non usa cookie di tracciamento</strong> e
       <strong>non invia alcun dato a server esterni</strong>. Utilizza
-      esclusivamente l'API <code>chrome.storage.local</code> del browser per
+      esclusivamente l'API <code>browserAPI.storage.local</code> del browser per
       salvare, solo sul tuo dispositivo:</p>
     <ul>
       <li>lo stato attivo/fermo dell'estensione;</li>
@@ -275,7 +288,7 @@
     </ul>
     <p>Questi dati restano locali, non sono condivisi con terze parti e
       vengono rimossi automaticamente disinstallando l'estensione (o
-      cancellabili manualmente da <code>chrome://extensions</code>).</p>
+      cancellabili manualmente dalle impostazioni delle estensioni).</p>
   </div>
 
   <div class="card faq">

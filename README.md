@@ -1,6 +1,6 @@
 # AutoContinua
 
-**AutoContinua** è un'estensione Chrome che clicca automaticamente i pulsanti di navigazione nelle pagine di corsi e-learning e molto altro!
+**AutoContinua** è un'estensione per Chrome e Firefox che clicca automaticamente i pulsanti di navigazione nelle pagine di corsi e-learning e molto altro!
 
 **Autore:** [Ettore Sartori](https://github.com/Ekt0re)
 
@@ -74,7 +74,7 @@ Quando compare un test o un quiz, ad esempio con domande a scelta singola o mult
 
 Al termine del test è possibile riprendere l'automazione premendo:
 
-`ALT + P`
+`CTRL + SHIFT + ALT + P`
 
 ---
 
@@ -82,10 +82,12 @@ Al termine del test è possibile riprendere l'automazione premendo:
 
 L'installazione deve essere effettuata una sola volta.
 
-1. Scarica l'[Ultima Release](https://github.com/Ekt0re/AutoContinua/releases/latest) 
+1. Scarica l'[Ultima Release](https://github.com/Ekt0re/AutoContinua/releases/latest)
    _(File .zip dell'estensione dalla sezione Assets. Non scaricare il codice sorgente Source code )._
 
 2. Estrai lo ZIP dell'estensione in una cartella a tua scelta.
+
+## Per Chrome
 
 3. Apri Chrome.
 
@@ -103,17 +105,33 @@ L'installazione deve essere effettuata una sola volta.
 
 Se non è visibile direttamente nella barra, apri l'icona delle estensioni 🧩 e fissa **AutoContinua**.
 
+## Per Firefox
+
+3. Apri Firefox.
+
+4. Vai su:
+
+   `about:debugging#/runtime/this-firefox`
+
+5. Clicca **Carica un componente aggiuntivo temporaneo...**.
+
+6. Seleziona il file `manifest.json` nella cartella estratta.
+
+7. L'icona di AutoContinua comparirà tra le estensioni di Firefox.
+
+Se non è visibile direttamente nella barra, apri il menu delle estensioni e fissa **AutoContinua**.
+
 ---
 
 # ▶️ Utilizzo
 
-1. Apri la pagina del corso e-learning in Chrome.
+1. Apri la pagina del corso e-learning nel browser (Chrome o Firefox).
 
 2. Clicca l'icona **AutoContinua** nella barra del browser.
 
 3. Premi **Avvia** nel popup oppure:
 
-   `ALT + P`
+   `CTRL + SHIFT + ALT + P`
 
 4. Lo stato passerà ad **attivo**.
 
@@ -123,16 +141,16 @@ Se non è visibile direttamente nella barra, apri l'icona delle estensioni 🧩 
 
 Per fermare tutto in qualsiasi momento:
 
-`ALT + S`
+`CTRL + SHIFT + ALT + S`
 
 ---
 
 # ⌨️ Scorciatoie da tastiera
 
-| Tasti       | Azione                                                           |
-| ----------- | ---------------------------------------------------------------- |
-| `ALT` + `P` | Avvia / riprende l'automazione e conferma anche un test rilevato |
-| `ALT` + `S` | Ferma l'automazione                                              |
+| Tasti                             | Azione                                                           |
+| --------------------------------- | ---------------------------------------------------------------- |
+| `CTRL` + `SHIFT` + `ALT` + `P`  | Avvia / riprende l'automazione e conferma anche un test rilevato |
+| `CTRL` + `SHIFT` + `ALT` + `S`  | Ferma l'automazione                                              |
 
 ---
 
@@ -156,7 +174,7 @@ AutoContinua:
 
 Utilizza esclusivamente l'API:
 
-`chrome.storage.local`
+`browserAPI.storage.local`
 
 per salvare, solamente sul dispositivo dell'utente:
 
@@ -168,7 +186,7 @@ Questi dati:
 * restano locali;
 * non vengono condivisi con terze parti;
 * vengono rimossi automaticamente disinstallando l'estensione;
-* possono essere cancellati manualmente da `chrome://extensions`.
+* possono essere cancellati manualmente dalle impostazioni delle estensioni.
 
 ---
 

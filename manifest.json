@@ -1,7 +1,7 @@
 {
   "manifest_version": 3,
   "name": "AutoContinua",
-  "version": "1.6",
+  "version": "1.7",
   "description": "Clicca automaticamente i pulsanti \"Continua\" (Click Box).",
   "author": "Ettore Sartori",
   "homepage_url": "https://github.com/Ekt0re/AutoContinua",
@@ -9,18 +9,27 @@
     "storage"
   ],
   "host_permissions": [
-    "<all_urls>"
+    "*://*/*",
+    "file:///*"
   ],
   "action": {
     "default_popup": "popup.html"
   },
   "background": {
-    "service_worker": "background.js"
+    "service_worker": "background.js",
+    "scripts": ["background.js"]
+  },
+  "browser_specific_settings": {
+    "gecko": {
+      "id": "autocontinua@ettoresartori.example",
+      "strict_min_version": "109.0"
+    }
   },
   "content_scripts": [
     {
       "matches": [
-        "<all_urls>"
+        "*://*/*",
+        "file:///*"
       ],
       "js": [
         "content.js"
