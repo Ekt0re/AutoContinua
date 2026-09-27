@@ -1,7 +1,7 @@
 {
   "manifest_version": 3,
   "name": "AutoContinua",
-  "version": "1.5",
+  "version": "1.6",
   "description": "Clicca automaticamente i pulsanti \"Continua\" (Click Box).",
   "author": "Ettore Sartori",
   "homepage_url": "https://github.com/Ekt0re/AutoContinua",
