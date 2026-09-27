@@ -16,7 +16,9 @@
       '.cp-frameset[role="button"]',
       '.cp-rewrap[role="button"]',
       '[aria-label="Click Box "]',
-      '[aria-label="Click Box"]'
+      '[aria-label="Click Box"]',
+      '#next',
+      '.acc-button'
     ].join(", "),
 
     // Candidati "elemento di quiz/test": pattern Captivate per input di domanda.
@@ -134,15 +136,18 @@
     if (rect.width <= 2 || rect.height <= 2) return false;
     const style = window.getComputedStyle(el);
     if (style.visibility === "hidden" || style.display === "none") return false;
+    if (el.classList.contains("cs-disabled")) return false;
+    if (el.getAttribute("aria-disabled") === "true") return false;
     return true;
   }
 
   function elementKey(el) {
     const rect = el.getBoundingClientRect();
-    return `${el.id || el.className}|${Math.round(rect.left)}|${Math.round(rect.top)}`;
+    if (el.id) return `${el.id}`;
+    return `${el.className}|${Math.round(rect.left)}|${Math.round(rect.top)}`;
   }
 
-  // Rileva bottoni "Continua" identificati dal TESTO visibile (es. la slide
+  // Rileva bottoni "Continua" / "Avanti" identificati dal TESTO visibile (es. la slide
   // "Risultato Test": bottoni "Continua" / "Controlla Test" con testo reale,
   // non hitbox invisibili come i Click_Box). Esclude esplicitamente qualsiasi
   // bottone il cui testo contenga "Controll..." (es. "Controlla Test").
@@ -161,7 +166,7 @@
       const t = (el.textContent || "").trim().toLowerCase();
       if (!t || t.length > 20) return;
       if (t.includes("controll")) return; // esclude "Controlla Test" e simili
-      if (t === "continua" || t.startsWith("continua")) results.push(el);
+      if (t === "continua" || t.startsWith("continua") || t === "avanti" || t.startsWith("avanti")) results.push(el);
     });
     return results;
   }
@@ -253,7 +258,6 @@
       recentlyClicked.set(key, now);
       const rect = el.getBoundingClientRect();
       log(`Click su '${el.id || el.className}' @ (${Math.round(rect.left)},${Math.round(rect.top)})`);
-      break;
     }
   }
 
