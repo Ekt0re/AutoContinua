@@ -9,6 +9,7 @@ on:
       - '**/*.js'
       - '**/*.html'
       - '**/*.css'
+      - 'icons/**'
 
 permissions:
   contents: write
@@ -23,11 +24,14 @@ jobs:
       - name: Validate manifest.json
         run: |
           set -euo pipefail
+
           if ! jq empty manifest.json; then
             echo "::error::manifest.json non è un JSON valido."
             exit 1
           fi
+
           MV=$(jq -r '.manifest_version' manifest.json)
+
           if [ "$MV" != "3" ]; then
             echo "::warning::manifest_version è $MV, atteso 3."
           fi
@@ -43,8 +47,8 @@ jobs:
         run: |
           set -euo pipefail
 
-          # File essenziali per il funzionamento dell'estensione (obbligatori:
-          # lo step fallisce se anche uno solo manca).
+          # File essenziali per il funzionamento dell'estensione.
+          # Lo step fallisce se anche uno solo manca.
           REQUIRED_FILES=(
             manifest.json
             background.js
@@ -53,7 +57,13 @@ jobs:
             popup.js
           )
 
-          # File accessori: inclusi se presenti, ma non bloccanti se mancano.
+          # Directory essenziali.
+          REQUIRED_DIRS=(
+            icons
+          )
+
+          # File accessori: inclusi se presenti,
+          # ma non bloccanti se mancanti.
           OPTIONAL_FILES=(
             guida.html
             LICENSE
@@ -62,14 +72,27 @@ jobs:
 
           mkdir -p release_temp
 
+          # Copia dei file obbligatori
           for f in "${REQUIRED_FILES[@]}"; do
             if [ ! -f "$f" ]; then
               echo "::error::File richiesto mancante: $f"
               exit 1
             fi
+
             cp "$f" release_temp/
           done
 
+          # Copia delle directory obbligatorie
+          for d in "${REQUIRED_DIRS[@]}"; do
+            if [ ! -d "$d" ]; then
+              echo "::error::Directory richiesta mancante: $d"
+              exit 1
+            fi
+
+            cp -R "$d" release_temp/
+          done
+
+          # File opzionali
           for f in "${OPTIONAL_FILES[@]}"; do
             if [ -f "$f" ]; then
               cp "$f" release_temp/
@@ -78,27 +101,50 @@ jobs:
             fi
           done
 
-          # Un solo zip, valido sia per Chrome (chrome://extensions) sia per
-          # Firefox (about:debugging / AMO): il manifest.json dichiara
-          # background.service_worker (Chrome) e background.scripts (Firefox),
-          # più browser_specific_settings.gecko per Firefox.
-          # I file vanno zippati stando DENTRO release_temp, così manifest.json
-          # finisce in radice nello zip (requisito di Firefox).
+          # Mostra il contenuto che verrà inserito nello ZIP
+          echo "Contenuto del pacchetto:"
+          find release_temp -type f | sort
+
+          # Un solo zip, valido sia per Chrome sia per Firefox.
+          #
+          # I file vengono zippati stando DENTRO release_temp,
+          # così manifest.json rimane nella radice dello ZIP.
           cd release_temp
           zip -r "../AutoContinua-v${VERSION}.zip" .
           cd ..
+
           rm -rf release_temp
 
       - name: Verify manifest.json is at the zip root
         run: |
           set -euo pipefail
-          TOP_LEVEL_MANIFEST=$(unzip -l "AutoContinua-v${VERSION}.zip" | awk '{print $4}' | grep -x "manifest.json" || true)
+
+          TOP_LEVEL_MANIFEST=$(unzip -l "AutoContinua-v${VERSION}.zip" \
+            | awk '{print $4}' \
+            | grep -x "manifest.json" || true)
+
           if [ -z "$TOP_LEVEL_MANIFEST" ]; then
             echo "::error::manifest.json non è in radice nello zip: Firefox non riuscirà a caricare l'estensione."
             unzip -l "AutoContinua-v${VERSION}.zip"
             exit 1
           fi
+
           echo "OK: manifest.json è in radice."
+
+      - name: Verify icons are in the zip
+        run: |
+          set -euo pipefail
+
+          if ! unzip -l "AutoContinua-v${VERSION}.zip" \
+            | awk '{print $4}' \
+            | grep -q '^icons/'; then
+
+            echo "::error::La directory icons/ non è presente nello ZIP."
+            unzip -l "AutoContinua-v${VERSION}.zip"
+            exit 1
+          fi
+
+          echo "OK: directory icons/ presente nello ZIP."
 
       - name: Create or Update Release
         uses: softprops/action-gh-release@v2
@@ -109,8 +155,11 @@ jobs:
             Aggiornamento automatico estensione versione ${{ env.VERSION }}.
 
             Un unico file .zip, compatibile sia con **Chrome** che con **Firefox**:
+
             - Chrome: `chrome://extensions` → Modalità sviluppatore → "Carica estensione non pacchettizzata" (estrarre lo zip e selezionare la cartella).
             - Firefox: `about:debugging#/runtime/this-firefox` → "Carica un componente aggiuntivo temporaneo" (estrarre lo zip e selezionare `manifest.json`). Per installazione permanente su Firefox stabile è necessaria la firma su addons.mozilla.org.
+
+            La directory `icons/` e tutte le icone contenute vengono incluse automaticamente nel pacchetto.
           files: "AutoContinua-v${{ env.VERSION }}.zip"
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
